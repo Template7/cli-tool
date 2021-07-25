@@ -1,0 +1,9 @@
+log:
+  level: DEBUG
+
+mongo:
+  db: tamplate7
+  host: 10.0.0.10
+  port: 27017
+  username:
+  password:
