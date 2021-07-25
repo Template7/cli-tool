@@ -52,7 +52,7 @@ func (c *client) SignIn() {
 	bodyBytes, _ := json.Marshal(body)
 
 	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminSignIn, bytes.NewBuffer(bodyBytes))
-	resp, err := util.SendHttpRequest(req)
+	resp, err := c.SendReq(req)
 	if err != nil {
 		log.Fatal("admin sign fail: ", err.Error())
 	}
