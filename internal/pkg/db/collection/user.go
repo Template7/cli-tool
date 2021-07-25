@@ -3,7 +3,7 @@ package collection
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type userStatus int
-type loginClientOs int
+type LoginClientOs int
 type LoginChannel int
 type Gender int
 
@@ -12,9 +12,9 @@ const (
 	UserStatusInitialized userStatus = 0 // not finish basic info yet
 	UserStatusActivate    userStatus = 1 // sign up finished, able to use the app
 
-	LoginClientOsUnknown loginClientOs = 0
-	LoginClientOsIos     loginClientOs = 1
-	LoginClientOsAndroid loginClientOs = 2
+	LoginClientOsUnknown LoginClientOs = 0
+	LoginClientOsIos     LoginClientOs = 1
+	LoginClientOsAndroid LoginClientOs = 2
 
 	LoginChannelUnknown  LoginChannel = 0
 	LoginChannelMobile   LoginChannel = 1
@@ -50,7 +50,7 @@ type UserInfo struct {
 }
 
 type LoginInfo struct {
-	Os            loginClientOs `json:"os" bson:"os" binding:"required"`
+	Os            LoginClientOs `json:"os" bson:"os" binding:"required"`
 	Device        string        `json:"device" bson:"device" binding:"required"` // iPhoneN, PixelN, NoteN, ...
 	Channel       LoginChannel  `json:"channel" bson:"channel"`
 	ChannelUserId string        `json:"channel_user_id" bson:"channel_user_id"` // user id of the channel

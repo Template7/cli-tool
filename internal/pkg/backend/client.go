@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	uriAdminSignIn = "/admin/v1/sign-in"
+	uriAdminSignIn     = "/admin/v1/sign-in"
+	uriAdminCreateUser = "/admin/v1/user"
 )
 
 type client struct {
@@ -30,9 +31,11 @@ var (
 func New() *client {
 	once.Do(func() {
 		instance = &client{
+			endPoint: config.New().Backend.Endpoint,
 			username: config.New().Backend.Username,
 			password: config.New().Backend.Password,
 		}
+		instance.SignIn()
 		log.Debug("backend client initialized")
 	})
 	return instance

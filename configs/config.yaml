@@ -7,3 +7,8 @@ mongo:
   port: 27017
   username:
   password:
+
+backend:
+  username: "admin"
+  password: "password"
+  endpoint: "http://localhost:8080"

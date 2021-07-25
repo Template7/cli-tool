@@ -14,7 +14,7 @@ func (c client) CreateUser(data collection.User) (err error) {
 
 	bodyBytes, _ := json.Marshal(data)
 
-	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminSignIn, bytes.NewBuffer(bodyBytes))
+	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminCreateUser, bytes.NewBuffer(bodyBytes))
 	resp, httpErr := util.SendHttpRequest(req)
 	if httpErr != nil {
 		err = httpErr
