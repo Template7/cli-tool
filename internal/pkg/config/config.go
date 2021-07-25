@@ -14,7 +14,7 @@ var (
 )
 
 type config struct {
-	Log  struct {
+	Log struct {
 		Level string `yaml:"level"`
 	} `yaml:"log"`
 	Mongo struct {
@@ -25,7 +25,8 @@ type config struct {
 		Password         string `yaml:"password"`
 		ConnectionString string
 	} `yaml:"mongo"`
-	Backend struct{
+	Backend struct {
+		Endpoint string
 		Username string
 		Password string
 	}
