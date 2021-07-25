@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"cli-tool/internal/pkg/config"
 	"cli-tool/internal/pkg/db/collection"
+	"cli-tool/internal/pkg/t7Error"
 	"cli-tool/internal/pkg/util"
 	"encoding/json"
 	log "github.com/sirupsen/logrus"
@@ -63,4 +64,9 @@ func (c *client) SignIn() {
 	c.token = token.AccessToken
 	log.Debug("admin sign in successfully")
 	return
+}
+
+func (c client) SendReq(req *http.Request) (response []byte, err *t7Error.Error) {
+	req.Header.Set("Authorization", c.token)
+	return util.SendHttpRequest(req)
 }

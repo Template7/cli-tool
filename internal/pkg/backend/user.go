@@ -3,7 +3,6 @@ package backend
 import (
 	"bytes"
 	"cli-tool/internal/pkg/db/collection"
-	"cli-tool/internal/pkg/util"
 	"encoding/json"
 	log "github.com/sirupsen/logrus"
 	"net/http"
@@ -15,7 +14,7 @@ func (c client) CreateUser(data collection.User) (err error) {
 	bodyBytes, _ := json.Marshal(data)
 
 	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminCreateUser, bytes.NewBuffer(bodyBytes))
-	resp, httpErr := util.SendHttpRequest(req)
+	resp, httpErr := c.SendReq(req)
 	if httpErr != nil {
 		err = httpErr
 		log.Error("fail to send http request: ", httpErr.Error())
