@@ -9,16 +9,9 @@ import (
 )
 
 type client struct {
-	User          *mongo.Collection
-	Decision      *mongo.Collection
-	Game          *mongo.Collection
-	Gambling      *mongo.Collection
-	Betting       *mongo.Collection
-	Gambler       *mongo.Collection
-	GambleHistory *mongo.Collection
-	Strategy      *mongo.Collection
-	StrategyMeta  *mongo.Collection
-	Simulation    *mongo.Collection
+	admin *mongo.Collection
+	user  *mongo.Collection
+	token *mongo.Collection
 }
 
 var (
@@ -30,28 +23,33 @@ func New() *client {
 	once.Do(func() {
 		c, err := mongo.Connect(nil, options.Client().ApplyURI(config.New().Mongo.ConnectionString))
 		if err != nil {
-			log.Fatal(err.Error())
-			return
-		}
-		if err := c.Ping(nil, nil); err != nil {
-			log.Fatal(err.Error())
+			log.Fatal(err)
 		}
 		db := c.Database(config.New().Mongo.Db)
 		instance = &client{
-			//Client:        c,
-			User:          db.Collection("user"),
-			Game:          db.Collection("game"),
-			Decision:      db.Collection("decision"),
-			Gambling:      db.Collection("gambling"),
-			Betting:       db.Collection("betting"),
-			Gambler:       db.Collection("gambler"),
-			GambleHistory: db.Collection("gamble_history"),
-			Strategy:      db.Collection("strategy"),
-			StrategyMeta:  db.Collection("strategy_meta"),
-			Simulation:    db.Collection("simulation"),
+			admin: db.Collection("admin"),
+			user:  db.Collection("user"),
+			token: db.Collection("token"),
 		}
-
+		if err := c.Ping(nil, nil); err != nil {
+			log.Fatal(err)
+		}
+		//instance.initIndex(db)
 		log.Debug("mongo client initialized")
 	})
 	return instance
 }
+
+//func (c client) initIndex(db *mongo.Database) {
+//	ctx := context.Background()
+//	for col, idx := range CollectionIndexes {
+//		log.Debug("create index for collection: ", col)
+//
+//		//db := c.Database(config.New().Mongo.Db)
+//		_, err := db.Collection(col).Indexes().CreateMany(ctx, idx)
+//		if err != nil {
+//			log.Error("unable to create index for collection: ", col, ". ", err.Error())
+//			panic(err)
+//		}
+//	}
+//}
