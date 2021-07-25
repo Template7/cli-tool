@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	avatar = "https://fakeimg.pl/350x200/?text=%s"
+	avatar = "https://fakeimg.pl/128x128/?text=%s"
 )
 
 func RandomUser() collection.User {

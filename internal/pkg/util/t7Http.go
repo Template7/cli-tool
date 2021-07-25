@@ -19,6 +19,7 @@ func SendHttpRequest(req *http.Request) (response []byte, err *t7Error.Error) {
 	response, _ = ioutil.ReadAll(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
+		log.Info("unexpected response: ", string(response))
 		log.Error("unexpected response code: ", resp.StatusCode)
 		err = t7Error.HttpUnexpectedResponseCode.WithDetailAndStatus(resp.Status, http.StatusInternalServerError)
 		return
