@@ -64,5 +64,5 @@ $ make build
 ## Docker Image
 
 ```
-$ docker push allensyk/template7-backend:latest
+$ docker push allensyk/template7-cli-tool:latest
 ```
