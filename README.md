@@ -36,7 +36,7 @@ For example: command layer should not access db client directly, suggest to acce
 ```
 $ /template7-cli --help
 NAME:
-   Template7 CLI Took - A new cli application
+   Template7 CLI Tool - A new cli application
 
 USAGE:
    template7-cli [global options] command [command options] [arguments...]
