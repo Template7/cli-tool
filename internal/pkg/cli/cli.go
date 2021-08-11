@@ -9,7 +9,7 @@ const version = "0.1.0"
 func InitCli() (app *cli.App) {
 
 	app = &cli.App{
-		Name:    "Template7 CLI Took",
+		Name:    "Template7 CLI Tool",
 		Version: version,
 	}
 
