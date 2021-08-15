@@ -1,0 +1,8 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ../
+      dockerfile: ./build/Dockerfile
+    image: allensyk/template7-cli-tool:latest
+    container_name: cli-tool
