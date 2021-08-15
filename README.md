@@ -61,6 +61,11 @@ GLOBAL OPTIONS:
 $ make build
 ```
 
+### Docker
+```
+$ make build-docker
+```
+
 ## Docker Image
 
 ```
