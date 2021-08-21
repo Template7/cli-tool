@@ -2,13 +2,13 @@ package backend
 
 import (
 	"bytes"
-	"cli-tool/internal/pkg/db/collection"
 	"encoding/json"
+	"github.com/Template7/common/structs"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
-func (c client) CreateUser(data collection.User) (err error) {
+func (c client) CreateUser(data structs.User) (err error) {
 	log.Debug("create user")
 
 	bodyBytes, _ := json.Marshal(data)

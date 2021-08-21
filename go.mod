@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/Pallinder/go-randomdata v1.2.0
+	github.com/Template7/common v0.0.0-20210821065642-bcedb78241d4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/klauspost/compress v1.13.3 // indirect
 	github.com/kr/text v0.2.0 // indirect

@@ -3,10 +3,10 @@ package backend
 import (
 	"bytes"
 	"cli-tool/internal/pkg/config"
-	"cli-tool/internal/pkg/db/collection"
 	"cli-tool/internal/pkg/t7Error"
 	"cli-tool/internal/pkg/util"
 	"encoding/json"
+	"github.com/Template7/common/structs"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"sync"
@@ -45,7 +45,7 @@ func New() *client {
 func (c *client) SignIn() {
 	log.Debug("sign in admin")
 
-	body := collection.Admin{
+	body := structs.Admin{
 		Username: c.username,
 		Password: c.password,
 	}
@@ -57,7 +57,7 @@ func (c *client) SignIn() {
 		log.Fatal("admin sign fail: ", err.Error())
 	}
 
-	var token collection.Token
+	var token structs.Token
 	if err := json.Unmarshal(resp, &token); err != nil {
 		log.Fatal("admin sign fail: ", err.Error())
 	}

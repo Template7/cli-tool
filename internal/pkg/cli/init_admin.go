@@ -2,7 +2,7 @@ package cli
 
 import (
 	"cli-tool/internal/pkg/db"
-	"cli-tool/internal/pkg/db/collection"
+	"github.com/Template7/common/structs"
 	"cli-tool/internal/pkg/util"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
@@ -46,7 +46,7 @@ func createAdmin(username string, password string) {
 		log.Fatal(err)
 	}
 
-	admin := collection.Admin{
+	admin := structs.Admin{
 		Username: username,
 		Password: hashedPassword,
 	}
