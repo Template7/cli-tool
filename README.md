@@ -6,7 +6,7 @@
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
-Template for CLI tool write by go.
+Template of CLI tool write by go.
 
 <br/>
 
