@@ -19,6 +19,7 @@ func InitCli() (app *cli.App) {
 
 func initCommand() []*cli.Command {
 	return []*cli.Command{
+		initDb,
 		initAdmin,
 		fakeData,
 	}

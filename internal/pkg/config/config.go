@@ -25,6 +25,16 @@ type config struct {
 		Password         string `yaml:"password"`
 		ConnectionString string
 	} `yaml:"mongo"`
+	MySql struct {
+		Db               string
+		Host             string
+		Port             int
+		Username         string
+		Password         string
+		ConnectionString string
+		Root         string
+		RootPassword string
+	}
 	Backend struct {
 		Endpoint string
 		Username string
@@ -56,10 +66,21 @@ func New() *config {
 		} else {
 			instance.Mongo.ConnectionString = fmt.Sprintf("mongodb://%s:%d", instance.Mongo.Host, instance.Mongo.Port)
 		}
+		instance.MySql.ConnectionString = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", instance.MySql.Username, instance.MySql.Password, instance.MySql.Host, instance.MySql.Port, instance.MySql.Db)
 
 		log.Debug("config initialized")
 	})
 	return instance
+}
+
+func SetDbConnectionString() {
+	if instance.Mongo.Username != "" && instance.Mongo.Password != "" {
+		instance.Mongo.ConnectionString = fmt.Sprintf("mongodb://%s:%s@%s:%d", instance.Mongo.Username, instance.Mongo.Password, instance.Mongo.Host, instance.Mongo.Port)
+	} else {
+		instance.Mongo.ConnectionString = fmt.Sprintf("mongodb://%s:%d", instance.Mongo.Host, instance.Mongo.Port)
+	}
+	//instance.MySql.ConnectionString = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", instance.MySql.Username, instance.MySql.Password, instance.MySql.Host, instance.MySql.Port, instance.MySql.Db)
+	instance.MySql.ConnectionString = fmt.Sprintf("%s:%s@tcp(%s:%d)/?charset=utf8mb4&parseTime=True&loc=Local", instance.MySql.Root, instance.MySql.RootPassword, instance.MySql.Host, instance.MySql.Port)
 }
 
 func (c *config) initLog() {
