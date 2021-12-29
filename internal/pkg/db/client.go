@@ -93,7 +93,7 @@ func (c *client) InitDb(force bool) {
 		log.Error("fail to create table: ", err.Error())
 		panic(err)
 	}
-	instance.mysql.db.Exec(fmt.Sprintf("CREATE USER IF NOT EXISTS '%s'@'localhost' IDENTIFIED BY '%s';", config.New().MySql.Username, config.New().MySql.Password))
-	instance.mysql.db.Exec(fmt.Sprintf("GRANT ALL ON %s.* TO '%s'@'localhost';", config.New().MySql.Db, config.New().MySql.Username))
+	instance.mysql.db.Exec(fmt.Sprintf("CREATE USER IF NOT EXISTS '%s'@'%%' IDENTIFIED BY '%s';", config.New().MySql.Username, config.New().MySql.Password))
+	instance.mysql.db.Exec(fmt.Sprintf("GRANT ALL ON %s.* TO '%s'@'%%';", config.New().MySql.Db, config.New().MySql.Username))
 	return
 }

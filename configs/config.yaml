@@ -2,14 +2,14 @@ log:
   level: DEBUG
 
 mongo:
-  db: template77
-  host: 10.0.0.10
+  db: temp_test
+  host: 127.0.0.1
   port: 27017
   username:
   password:
 
 mysql:
-  db: template77
+  db: temp_test
   host: 127.0.0.1
   port: 3306
   username: template7
