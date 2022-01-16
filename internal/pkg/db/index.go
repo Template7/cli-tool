@@ -20,7 +20,7 @@ var (
 					Value: bsonx.Int32(1),
 				},
 			},
-			Options: options.Index().SetUnique(true),
+			//Options: options.Index().SetUnique(true),
 		},
 		{
 			Keys: bsonx.Doc{
@@ -29,7 +29,7 @@ var (
 					Value: bsonx.Int32(1),
 				},
 			},
-			Options: options.Index().SetUnique(true),
+			//Options: options.Index().SetUnique(true),
 		},
 		{
 			Keys: bsonx.Doc{
