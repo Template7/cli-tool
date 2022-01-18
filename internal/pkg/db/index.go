@@ -9,6 +9,8 @@ import (
 var CollectionIndexes = map[string][]mongo.IndexModel{
 	"user":               user,
 	"transactionHistory": transactionHistory,
+	"depositHistory":     depositHistory,
+	"withdrawHistory":    withdrawHistory,
 }
 
 var (
@@ -54,6 +56,42 @@ var (
 				},
 				{
 					Key:   "transaction_id",
+					Value: bsonx.Int32(1),
+				},
+			},
+		},
+	}
+	depositHistory = []mongo.IndexModel{
+		{
+			Keys: bsonx.Doc{
+				{
+					Key:   "wallet_id",
+					Value: bsonx.Int32(1),
+				},
+				{
+					Key:   "deposit_id",
+					Value: bsonx.Int32(1),
+				},
+				{
+					Key:   "source",
+					Value: bsonx.Int32(1),
+				},
+			},
+		},
+	}
+	withdrawHistory = []mongo.IndexModel{
+		{
+			Keys: bsonx.Doc{
+				{
+					Key:   "wallet_id",
+					Value: bsonx.Int32(1),
+				},
+				{
+					Key:   "withdraw_id",
+					Value: bsonx.Int32(1),
+				},
+				{
+					Key:   "target",
 					Value: bsonx.Int32(1),
 				},
 			},
