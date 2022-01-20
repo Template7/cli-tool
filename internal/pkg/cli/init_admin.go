@@ -2,9 +2,8 @@ package cli
 
 import (
 	"cli-tool/internal/pkg/db"
-	"github.com/Template7/common/structs"
 	"cli-tool/internal/pkg/util"
-	log "github.com/sirupsen/logrus"
+	"github.com/Template7/common/structs"
 	"github.com/urfave/cli/v2"
 )
 

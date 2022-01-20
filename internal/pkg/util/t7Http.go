@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func SendHttpRequest(req *http.Request) (response []byte, err *t7Error.Error) {
+func SendHttpRequest(req *http.Request) (response []byte, code int, err *t7Error.Error) {
 	client := http.Client{}
 	resp, httpErr := client.Do(req)
 	if httpErr != nil {
@@ -17,12 +17,13 @@ func SendHttpRequest(req *http.Request) (response []byte, err *t7Error.Error) {
 	}
 
 	response, _ = ioutil.ReadAll(resp.Body)
+	code = resp.StatusCode
 
-	if resp.StatusCode != http.StatusOK {
-		log.Info("unexpected response: ", string(response))
-		log.Error("unexpected response code: ", resp.StatusCode)
-		err = t7Error.HttpUnexpectedResponseCode.WithDetailAndStatus(resp.Status, http.StatusInternalServerError)
-		return
-	}
+	//if resp.StatusCode != http.StatusOK {
+	//	log.Info("unexpected response: ", string(response))
+	//	log.Error("unexpected response code: ", resp.StatusCode)
+	//	err = t7Error.HttpUnexpectedResponseCode.WithDetailAndStatus(resp.Status, http.StatusInternalServerError)
+	//	return
+	//}
 	return
 }

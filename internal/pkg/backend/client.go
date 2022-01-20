@@ -6,8 +6,9 @@ import (
 	"cli-tool/internal/pkg/t7Error"
 	"cli-tool/internal/pkg/util"
 	"encoding/json"
+	"fmt"
+	"github.com/Template7/common/logger"
 	"github.com/Template7/common/structs"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"sync"
 )
@@ -15,6 +16,15 @@ import (
 const (
 	uriAdminSignIn     = "/admin/v1/sign-in"
 	uriAdminCreateUser = "/admin/v1/user"
+
+	uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
+	uriMobileSignUp      = "/api/v1/sign-up/mobile"
+	uriMobileSignIn      = "/api/v1/sign-in/mobile"
+	uriUpdateUser        = "/api/v1/users/%s"
+)
+
+var (
+	log = logger.GetLogger()
 )
 
 type client struct {
@@ -36,7 +46,7 @@ func New() *client {
 			username: config.New().Backend.Username,
 			password: config.New().Backend.Password,
 		}
-		instance.SignIn()
+		//instance.SignIn()
 		log.Debug("backend client initialized")
 	})
 	return instance
@@ -67,6 +77,14 @@ func (c *client) SignIn() {
 }
 
 func (c client) SendReq(req *http.Request) (response []byte, err *t7Error.Error) {
-	req.Header.Set("Authorization", c.token)
-	return util.SendHttpRequest(req)
+	//req.Header.Set("Authorization", c.token)
+	resp, code, httpErr := util.SendHttpRequest(req)
+	if httpErr != nil {
+		return nil, httpErr
+	}
+	if code >= 400 {
+		err = t7Error.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
+	}
+
+	return resp, nil
 }
