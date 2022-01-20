@@ -1,5 +1,6 @@
 log:
   level: DEBUG
+  formatter: STRING
 
 mongo:
   db: temp_test
@@ -21,3 +22,7 @@ backend:
   username: "admin"
   password: "password"
   endpoint: "http://localhost:8080"
+
+redis:
+  host: "localhost:6379"
+  password:

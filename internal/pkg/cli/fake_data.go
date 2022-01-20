@@ -3,7 +3,7 @@ package cli
 import (
 	"cli-tool/internal/pkg/backend"
 	fakeDataGenerator "cli-tool/internal/pkg/fakeData"
-	log "github.com/sirupsen/logrus"
+	"github.com/Template7/backend/pkg/apiBody"
 	"github.com/urfave/cli/v2"
 )
 
@@ -32,8 +32,13 @@ var (
 func genFakeUser(number int) {
 	for i := 0; i < number; i++ {
 		fakeUser := fakeDataGenerator.RandomUser()
-		if err := backend.New().CreateUser(fakeUser); err != nil {
+		data := apiBody.CreateUserReq{
+			Mobile: fakeUser.Mobile,
+			Email:  fakeUser.Email,
+		}
+		if err := backend.New().CreateUser(data); err != nil {
 			log.Fatal(err)
 		}
+
 	}
 }
