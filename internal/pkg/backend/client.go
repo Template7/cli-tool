@@ -21,6 +21,9 @@ const (
 	uriMobileSignUp      = "/api/v1/sign-up/mobile"
 	uriMobileSignIn      = "/api/v1/sign-in/mobile"
 	uriUpdateUser        = "/api/v1/users/%s"
+	uriGetUserData       = "/api/v1/users/%s"
+	uriDeposit           = "/api/v1/wallet/deposit"
+	uriTransaction       = "/api/v1/transaction"
 )
 
 var (

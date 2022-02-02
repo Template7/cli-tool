@@ -35,7 +35,7 @@ func RandomUser() structs.User {
 }
 
 func randomMobile() string {
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 	prefix := Candidate.MobilePrefix[rand.Intn(len(Candidate.MobilePrefix))]
 	number := fmt.Sprintf("%010d", rand.Int63n(1e10))
 	return prefix + number
