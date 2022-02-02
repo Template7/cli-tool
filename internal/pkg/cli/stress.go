@@ -4,6 +4,8 @@ import (
 	fakeDataGenerator "cli-tool/internal/pkg/fakeData"
 	"cli-tool/internal/pkg/user"
 	"github.com/urfave/cli/v2"
+	"gopkg.in/yaml.v3"
+	"os"
 )
 
 var (
@@ -26,9 +28,9 @@ var (
 		Name:    "BatchSignUp",
 		Usage:   "Batch sign up",
 		Aliases: []string{"bsu"},
-		Flags:   stressTestFlag,
+		Flags:   batchSignUpFlag,
 		Action: func(c *cli.Context) error {
-			doBatchSignUp(c.Int("user"))
+			doBatchSignUp(c.Int("user"), c.String("out"))
 			return nil
 		},
 	}
@@ -37,30 +39,39 @@ var (
 		Name:    "BatchSignIn",
 		Usage:   "Batch sign in",
 		Aliases: []string{"bsi"},
-		Flags:   stressTestFlag,
+		Flags:   batchSignInFlag,
 		Action: func(c *cli.Context) error {
-			doBatchSignIn(c.Int("user"))
+			doBatchSignIn(c.String("file"))
 			return nil
 		},
 	}
-	stressTestFlag = []cli.Flag{
+
+	batchSignUpFlag = []cli.Flag{
 		&cli.IntFlag{
 			Name:    "user",
-			Aliases: []string{"n"},
 			Usage:   "Number of user",
+			Aliases: []string{"n"},
 			Value:   10,
 		},
-		//&cli.IntFlag{
-		//	Name:    "delay",
-		//	Aliases: []string{"d"},
-		//	Usage:   "Number of user",
-		//	Value:   10,
-		//},
+		&cli.StringFlag{
+			Name:    "out",
+			Usage:   "Write sign up mobile list to yaml file",
+			Aliases: []string{"o"},
+		},
+	}
+	batchSignInFlag = []cli.Flag{
+		&cli.StringFlag{
+			Name:    "file",
+			Usage:   "Read mobile list from yaml file for batch sign in",
+			Aliases: []string{"f"},
+		},
 	}
 )
 
-func doBatchSignUp(count int) {
+func doBatchSignUp(count int, out string) {
 	log.Debug("do batch sign up: ", count)
+
+	mobileList := make([]string, count)
 
 	for i := 0; i < count; i++ {
 		userData := fakeDataGenerator.RandomUser()
@@ -76,21 +87,43 @@ func doBatchSignUp(count int) {
 			log.Error("fail to update user info: ", err.Error())
 			return
 		}
+		mobileList[i] = userData.Mobile
+	}
+
+	data, err := yaml.Marshal(&mobileList)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := os.WriteFile(out, data, 0666); err != nil {
+		log.Fatal(err)
 	}
 
 	log.Debug("finish batch sign up")
 }
 
-func doBatchSignIn(count int) {
-	log.Debug("do batch sign in: ", count)
+func doBatchSignIn(file string) {
+	log.Debug("do batch sign in")
 
-	for i := 0; i < count; i++ {
-		userData := fakeDataGenerator.RandomUser()
-		fakeUser := user.User{
-			Data: userData,
+	// read mobile list from file
+	var mobileList []string
+	data, err := os.ReadFile(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := yaml.Unmarshal(data, &mobileList); err != nil {
+		log.Fatal(err)
+	}
+
+	for _, mobile := range mobileList {
+		tempUser := user.User{}
+		tempUser.Data.Mobile = mobile
+		if err := tempUser.SignIn(); err != nil {
+			log.Error("fail to sign up user: ", tempUser.Data.UserId)
+			return
 		}
-		if err := fakeUser.SignIn(); err != nil {
-			log.Error("fail to sign up user: ", fakeUser.Data.UserId)
+
+		if err := tempUser.GetInfo(); err != nil {
+			log.Error("fail to get user info: ", err.Error())
 			return
 		}
 	}
