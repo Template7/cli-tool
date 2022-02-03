@@ -87,6 +87,7 @@ func (c client) SendReq(req *http.Request) (response []byte, err *t7Error.Error)
 	}
 	if code >= 400 {
 		err = t7Error.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
+		return
 	}
 
 	return resp, nil
