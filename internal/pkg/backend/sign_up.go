@@ -13,7 +13,7 @@ type ConfirmSmsVerifyCodeReq struct {
 	Code   string `json:"code" binding:"required" example:"1234567"`
 }
 
-func (c client) MobileSignUp(data ConfirmSmsVerifyCodeReq) (token structs.Token, err error) {
+func (c *client) MobileSignUp(data ConfirmSmsVerifyCodeReq) (token structs.Token, err error) {
 	log.Debug("mobile sign up")
 
 	bodyBytes, _ := json.Marshal(data)

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (c client) MobileSignIn(data ConfirmSmsVerifyCodeReq) (token structs.Token, err error) {
+func (c *client) MobileSignIn(data ConfirmSmsVerifyCodeReq) (token structs.Token, err error) {
 	log.Debug("mobile sign in")
 
 	bodyBytes, _ := json.Marshal(data)

@@ -11,7 +11,7 @@ type SmsReq struct {
 	Mobile string `json:"mobile" binding:"required" example:"+886987654321"`
 }
 
-func (c client) SendSms(mobile string) (err error) {
+func (c *client) SendSms(mobile string) (err error) {
 	log.Debug("send sms verify code: ", mobile)
 
 	data := SmsReq{

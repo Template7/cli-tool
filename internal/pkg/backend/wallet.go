@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (c client) Deposit(data apiBody.DepositReq, userToken string) (err error) {
+func (c *client) Deposit(data apiBody.DepositReq, userToken string) (err error) {
 	log.Debug("backend deposit")
 
 	bodyBytes, _ := json.Marshal(data)
@@ -25,7 +25,7 @@ func (c client) Deposit(data apiBody.DepositReq, userToken string) (err error) {
 	return
 }
 
-func (c client) Transaction(data apiBody.TransactionReq, userToken string) (resp apiBody.TransactionResp, err error) {
+func (c *client) Transaction(data apiBody.TransactionReq, userToken string) (resp apiBody.TransactionResp, err error) {
 	log.Debug("make transaction: ", data.String())
 
 	bodyBytes, _ := json.Marshal(data)
