@@ -39,6 +39,5 @@ func genFakeUser(number int) {
 		if err := backend.New().CreateUser(data); err != nil {
 			log.Fatal(err)
 		}
-
 	}
 }

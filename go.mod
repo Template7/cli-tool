@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/Pallinder/go-randomdata v1.2.0
 	github.com/Template7/backend v1.2.2-0.20220126104422-13caa54e118b
-	github.com/Template7/common v0.0.0-20220120032944-4b5be01936fc
+	github.com/Template7/common v0.0.0-20230227182610-f3dec298b5dc
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/klauspost/compress v1.14.2 // indirect
@@ -20,3 +20,7 @@ require (
 	gorm.io/driver/mysql v1.2.3
 	gorm.io/gorm v1.22.5
 )
+
+//replace (
+//	github.com/Template7/common => ../common
+//)

@@ -79,7 +79,7 @@ func (c *client) SignIn() {
 	return
 }
 
-func (c client) SendReq(req *http.Request) (response []byte, err *t7Error.Error) {
+func (c *client) SendReq(req *http.Request) (response []byte, err *t7Error.Error) {
 	//req.Header.Set("Authorization", c.token)
 	resp, code, httpErr := util.SendHttpRequest(req)
 	if httpErr != nil {
@@ -89,6 +89,5 @@ func (c client) SendReq(req *http.Request) (response []byte, err *t7Error.Error)
 		err = t7Error.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
 		return
 	}
-
 	return resp, nil
 }

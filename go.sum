@@ -79,6 +79,8 @@ github.com/Template7/backend v1.2.2-0.20220126104422-13caa54e118b/go.mod h1:SMfm
 github.com/Template7/common v0.0.0-20220117062309-aefc500e2dea/go.mod h1:gg47i7jS0AxXWcWxk+jypc86HwXCcAp0uYwOdMbUgNU=
 github.com/Template7/common v0.0.0-20220120032944-4b5be01936fc h1:yW9gP8NxnXb0zDL2uxGSz1Rm1TfhOx2Vq39dvgfOSr8=
 github.com/Template7/common v0.0.0-20220120032944-4b5be01936fc/go.mod h1:48wwHyKJEzIDpwDrNy4kXU3EZnYIeCoKoGtjK0t2Rd8=
+github.com/Template7/common v0.0.0-20230227182610-f3dec298b5dc h1:RyC/mlaEHOtQ1aqUgI8BJxnGRFkQP/BxXVpT6pfAe30=
+github.com/Template7/common v0.0.0-20230227182610-f3dec298b5dc/go.mod h1:48wwHyKJEzIDpwDrNy4kXU3EZnYIeCoKoGtjK0t2Rd8=
 github.com/agiledragon/gomonkey/v2 v2.3.1/go.mod h1:ap1AmDzcVOAz1YpeJ3TCzIgstoaWLA6jbbgxfB4w2iY=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 h1:JYp7IbQjafoB+tBA3gMyHYHrpOtNuDiK/uB5uXxq5wM=

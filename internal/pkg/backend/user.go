@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (c client) CreateUser(data apiBody.CreateUserReq) (err error) {
+func (c *client) CreateUser(data apiBody.CreateUserReq) (err error) {
 	log.Debug("create user")
 
 	bodyBytes, _ := json.Marshal(data)
@@ -25,7 +25,7 @@ func (c client) CreateUser(data apiBody.CreateUserReq) (err error) {
 	return
 }
 
-func (c client) UpdateUser(data structs.User, userToken string) (err error) {
+func (c *client) UpdateUser(data structs.User, userToken string) (err error) {
 	log.Debug("update user")
 
 	bodyBytes, _ := json.Marshal(data.BasicInfo)
@@ -43,7 +43,7 @@ func (c client) UpdateUser(data structs.User, userToken string) (err error) {
 	return
 }
 
-func (c client) GetUserData(userId string, userToken string) (data apiBody.UserInfoResp, err error) {
+func (c *client) GetUserData(userId string, userToken string) (data apiBody.UserInfoResp, err error) {
 	log.Debug("get user data: ", userId)
 
 	uri := fmt.Sprintf(uriGetUserData, userId)
