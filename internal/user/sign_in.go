@@ -35,7 +35,7 @@ func (u *User) SignIn() error {
 func (u *User) GetInfo() error {
 	log.Debug("get user info: ", u.Data.UserId)
 
-	data, err := backend2.New().GetUserData(u.Data.UserId, u.Token.AccessToken)
+	data, err := backend2.New().GetUserInfo(u.Data.UserId, u.Token.AccessToken)
 	if err != nil {
 		log.Error("fail to get user data: ", u.Data.UserId, ". ", err.Error())
 		return err
