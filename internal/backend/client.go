@@ -1,93 +1,71 @@
 package backend
 
 import (
-	"bytes"
 	"cli-tool/internal/config"
-	t7Error2 "cli-tool/internal/t7Error"
-	"cli-tool/internal/util"
-	"encoding/json"
-	"fmt"
+	"context"
 	"github.com/Template7/common/logger"
-	"github.com/Template7/common/structs"
+	"io"
 	"net/http"
 	"sync"
 )
 
 const (
-	uriAdminSignIn     = "/admin/v1/sign-in"
-	uriAdminCreateUser = "/admin/v1/user"
-
-	uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
-	uriMobileSignUp      = "/api/v1/sign-up/mobile"
-	uriMobileSignIn      = "/api/v1/sign-in/mobile"
-	uriUpdateUser        = "/api/v1/users/%s"
-	uriGetUserData       = "/api/v1/users/%s"
-	uriDeposit           = "/api/v1/wallet/deposit"
-	uriTransaction       = "/api/v1/transaction"
+	uriUserLogin      = "/api/v1/login/native"
+	uriUpdateUserInfo = "/api/v1/user/info"
+	uriGetUserInfo    = "/api/v1/user/info"
+	//uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
+	//uriMobileSignUp      = "/api/v1/sign-up/mobile"
+	//uriMobileSignIn      = "/api/v1/sign-in/mobile"
+	//uriUpdateUser        = "/api/v1/users/%s"
+	//uriGetUserData       = "/api/v1/users/%s"
+	//uriDeposit           = "/api/v1/wallet/deposit"
+	//uriTransaction       = "/api/v1/transaction"
 )
 
-var (
-	log = logger.GetLogger()
-)
-
-type client struct {
+type CliCent struct {
 	endPoint string
-	username string
-	password string
-	token    string
+
+	log *logger.Logger
 }
 
 var (
 	once     sync.Once
-	instance *client
+	instance *CliCent
 )
 
-func New() *client {
+func New() *CliCent {
 	once.Do(func() {
-		instance = &client{
+		log := logger.New().WithService("backend")
+		instance = &CliCent{
 			endPoint: config.New().Backend.Endpoint,
-			username: config.New().Backend.Username,
-			password: config.New().Backend.Password,
+			log:      log,
 		}
-		//instance.SignIn()
+
 		log.Debug("backend client initialized")
 	})
 	return instance
 }
 
-func (c *client) SignIn() {
-	log.Debug("sign in admin")
+func (c *CliCent) SendReq(ctx context.Context, req *http.Request) (data []byte, err error) {
+	log := c.log.WithContext(ctx)
+	log.Debug("send http req")
 
-	body := structs.Admin{
-		Username: c.username,
-		Password: c.password,
-	}
-	bodyBytes, _ := json.Marshal(body)
-
-	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminSignIn, bytes.NewBuffer(bodyBytes))
-	resp, err := c.SendReq(req)
+	client := http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal("admin sign fail: ", err.Error())
+		log.WithError(err).Error("fail to send req")
+		return nil, err
 	}
 
-	var token structs.Token
-	if err := json.Unmarshal(resp, &token); err != nil {
-		log.Fatal("admin sign fail: ", err.Error())
+	data, err = io.ReadAll(resp.Body)
+	if err != nil {
+		log.WithError(err).Error("fail to read resp body")
+		return nil, err
 	}
-	c.token = token.AccessToken
-	log.Debug("admin sign in successfully")
-	return
-}
 
-func (c *client) SendReq(req *http.Request) (response []byte, err *t7Error2.Error) {
-	//req.Header.Set("Authorization", c.token)
-	resp, code, httpErr := util.SendHttpRequest(req)
-	if httpErr != nil {
-		return nil, httpErr
+	if resp.StatusCode != http.StatusOK {
+		log.With("status", resp.StatusCode).With("resp", string(data)).Warn("non-200 http status")
 	}
-	if code >= 400 {
-		err = t7Error2.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
-		return
-	}
-	return resp, nil
+
+	return data, nil
 }

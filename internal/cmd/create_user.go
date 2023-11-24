@@ -8,13 +8,13 @@ import (
 
 var CreateUser = cli.Command{
 	Name:    "Create user",
-	Usage:   "Create test user",
+	Usage:   "Create users for test",
 	Aliases: []string{"cu"},
 	Flags: []cli.Flag{
 		&cli.IntFlag{
 			Name:    "amount",
 			Aliases: []string{"a"},
-			Usage:   "Amount of test users to create",
+			Usage:   "Amount of users",
 			Value:   1,
 		},
 	},

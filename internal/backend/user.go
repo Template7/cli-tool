@@ -2,66 +2,97 @@ package backend
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/Template7/backend/pkg/apiBody"
-	"github.com/Template7/common/structs"
+	"github.com/Template7/backend/api/types"
 	"net/http"
 )
 
-func (c *client) CreateUser(data apiBody.CreateUserReq) (err error) {
-	log.Debug("create user")
+func (c *CliCent) NativeLogin(ctx context.Context, username string, password string) string {
+	log := c.log.WithContext(ctx).With("username", username)
+	log.Debug("user login")
 
-	bodyBytes, _ := json.Marshal(data)
-
-	req, _ := http.NewRequest(http.MethodPost, c.endPoint+uriAdminCreateUser, bytes.NewBuffer(bodyBytes))
-	resp, httpErr := c.SendReq(req)
-	if httpErr != nil {
-		err = httpErr
-		log.Error("fail to send http request: ", httpErr.Error())
-		return
+	body := types.HttpLoginReq{
+		Username: username,
+		Password: password,
 	}
-	log.Debug("create user response: ", string(resp))
-	return
+	bodyBytes, _ := json.Marshal(body)
+
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s%s", c.endPoint, uriUserLogin), bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return ""
+	}
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return ""
+	}
+
+	var data types.HttpLoginResp
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).Error("fail to unmarshal data")
+		return ""
+	}
+
+	log.With("requestId", data.RequestId).Debug("user login success")
+	return data.Data.Token
 }
 
-func (c *client) UpdateUser(data structs.User, userToken string) (err error) {
-	log.Debug("update user")
+func (c *CliCent) UpdateUserInfo(ctx context.Context, nickname string, userToken string) (err error) {
+	log := c.log.WithContext(ctx).With("token", userToken)
+	log.Debug("update user info")
 
-	bodyBytes, _ := json.Marshal(data.BasicInfo)
+	body := types.HttpUpdateUserInfoReq{
+		Nickname: nickname,
+	}
+	bodyBytes, _ := json.Marshal(body)
 
-	uri := fmt.Sprintf(uriUpdateUser, data.UserId)
-	req, _ := http.NewRequest(http.MethodPut, c.endPoint+uri, bytes.NewBuffer(bodyBytes))
-	req.Header.Set("Authorization", userToken)
-	resp, httpErr := c.SendReq(req)
-	if httpErr != nil {
-		err = httpErr
-		log.Error("fail to send http request: ", httpErr.Error())
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s%s", c.endPoint, uriUpdateUserInfo), bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
 		return
 	}
-	log.Debug("update user response: ", string(resp))
-	return
+	req.Header.Set("Authorization", userToken)
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return err
+	}
+
+	var data types.HttpRespBase
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).Error("fail to unmarshal data")
+		return err
+	}
+
+	log.With("requestId", data.RequestId).Debug("update user info success")
+	return nil
 }
 
-func (c *client) GetUserData(userId string, userToken string) (data apiBody.UserInfoResp, err error) {
-	log.Debug("get user data: ", userId)
+func (c *CliCent) GetUserInfo(ctx context.Context, userToken string) (types.HttpUserInfoResp, error) {
+	log := c.log.WithContext(ctx).With("token", userToken)
+	log.Debug("get user info")
 
-	uri := fmt.Sprintf(uriGetUserData, userId)
-	req, _ := http.NewRequest(http.MethodGet, c.endPoint+uri, nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", c.endPoint, uriGetUserInfo), nil)
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return types.HttpUserInfoResp{}, err
+	}
 	req.Header.Set("Authorization", userToken)
-	resp, httpErr := c.SendReq(req)
-	if httpErr != nil {
-		err = httpErr
-		log.Error("fail to send http request: ", httpErr.Error())
-		return
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return types.HttpUserInfoResp{}, err
 	}
 
-	if dErr := json.Unmarshal(resp, &data); dErr != nil {
-		log.Error("fail to decode response: ", dErr.Error())
-		err = dErr
-		return
+	var data types.HttpUserInfoResp
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).Error("fail to unmarshal data")
+		return types.HttpUserInfoResp{}, err
 	}
 
-	log.Debug("get user data response: ", string(resp))
-	return
+	log.With("requestId", data.RequestId).Debug("get user info success")
+	return data, nil
 }
