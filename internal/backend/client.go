@@ -2,9 +2,9 @@ package backend
 
 import (
 	"bytes"
-	"cli-tool/internal/pkg/config"
-	"cli-tool/internal/pkg/t7Error"
-	"cli-tool/internal/pkg/util"
+	"cli-tool/internal/config"
+	t7Error2 "cli-tool/internal/t7Error"
+	"cli-tool/internal/util"
 	"encoding/json"
 	"fmt"
 	"github.com/Template7/common/logger"
@@ -79,14 +79,14 @@ func (c *client) SignIn() {
 	return
 }
 
-func (c *client) SendReq(req *http.Request) (response []byte, err *t7Error.Error) {
+func (c *client) SendReq(req *http.Request) (response []byte, err *t7Error2.Error) {
 	//req.Header.Set("Authorization", c.token)
 	resp, code, httpErr := util.SendHttpRequest(req)
 	if httpErr != nil {
 		return nil, httpErr
 	}
 	if code >= 400 {
-		err = t7Error.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
+		err = t7Error2.HttpUnexpectedResponseCode.WithDetail(fmt.Sprintf("status code: %d", code))
 		return
 	}
 	return resp, nil

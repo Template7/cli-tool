@@ -1,8 +1,8 @@
-package cli
+package cmd
 
 import (
-	fakeDataGenerator "cli-tool/internal/pkg/fakeData"
-	"cli-tool/internal/pkg/user"
+	fakeDataGenerator "cli-tool/internal/fakeData"
+	"cli-tool/internal/user"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v3"
 	"os"

@@ -1,8 +1,8 @@
-package cli
+package cmd
 
 import (
-	"cli-tool/internal/pkg/config"
-	"cli-tool/internal/pkg/db"
+	"cli-tool/internal/config"
+	"cli-tool/internal/db"
 	"github.com/urfave/cli/v2"
 )
 

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"cli-tool/internal/pkg/config"
+	"cli-tool/internal/config"
 	"context"
 	"fmt"
 	"github.com/Template7/common/structs"

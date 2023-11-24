@@ -1,7 +1,7 @@
 package user
 
 import (
-	"cli-tool/internal/pkg/t7Redis"
+	"cli-tool/internal/t7Redis"
 	"fmt"
 	"github.com/Template7/common/logger"
 	"github.com/Template7/common/structs"

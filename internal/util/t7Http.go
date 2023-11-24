@@ -1,18 +1,18 @@
 package util
 
 import (
-	"cli-tool/internal/pkg/t7Error"
+	t7Error2 "cli-tool/internal/t7Error"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 )
 
-func SendHttpRequest(req *http.Request) (response []byte, code int, err *t7Error.Error) {
+func SendHttpRequest(req *http.Request) (response []byte, code int, err *t7Error2.Error) {
 	client := http.Client{}
 	resp, httpErr := client.Do(req)
 	if httpErr != nil {
 		log.Error("fail to send request: ", httpErr.Error())
-		err = t7Error.HttpOperationFail.WithDetailAndStatus(httpErr.Error(), http.StatusInternalServerError)
+		err = t7Error2.HttpOperationFail.WithDetailAndStatus(httpErr.Error(), http.StatusInternalServerError)
 		return
 	}
 

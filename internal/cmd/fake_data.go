@@ -1,9 +1,10 @@
-package cli
+package cmd
 
 import (
-	"cli-tool/internal/pkg/backend"
-	fakeDataGenerator "cli-tool/internal/pkg/fakeData"
+	"cli-tool/internal/backend"
+	fakeDataGenerator "cli-tool/internal/fakeData"
 	"github.com/Template7/backend/pkg/apiBody"
+	"github.com/Template7/common/logger"
 	"github.com/urfave/cli/v2"
 )
 
@@ -37,7 +38,7 @@ func genFakeUser(number int) {
 			Email:  fakeUser.Email,
 		}
 		if err := backend.New().CreateUser(data); err != nil {
-			log.Fatal(err)
+			logger.New().WithError(err).Error("fail to create user")
 		}
 	}
 }
