@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/Pallinder/go-randomdata v1.2.0
-	github.com/Template7/backend v1.2.3
+	github.com/Template7/backend v1.2.4
 	github.com/Template7/common v0.1.8
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-redis/redis v6.15.9+incompatible
