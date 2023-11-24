@@ -1,7 +1,7 @@
 package user
 
 import (
-	"cli-tool/internal/pkg/backend"
+	"cli-tool/internal/backend"
 	"github.com/Template7/common/structs"
 )
 

@@ -1,7 +1,7 @@
 package t7Redis
 
 import (
-	"cli-tool/internal/pkg/config"
+	"cli-tool/internal/config"
 	"github.com/Template7/common/logger"
 	"github.com/go-redis/redis"
 	"sync"
@@ -14,7 +14,7 @@ const (
 var (
 	once     sync.Once
 	instance *redis.Client
-	log = logger.GetLogger()
+	log      = logger.GetLogger()
 )
 
 func New() *redis.Client {

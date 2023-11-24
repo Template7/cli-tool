@@ -1,20 +1,22 @@
 package user
 
-import "cli-tool/internal/pkg/backend"
+import (
+	backend2 "cli-tool/internal/backend"
+)
 
 func (u *User) SignIn() error {
 	log.Debug("user sign in: ", u.Data.UserId)
 
-	if err := backend.New().SendSms(u.Data.Mobile); err != nil {
+	if err := backend2.New().SendSms(u.Data.Mobile); err != nil {
 		log.Error("fail to send sms: ", err.Error())
 		return err
 	}
 
-	signInData := backend.ConfirmSmsVerifyCodeReq{
+	signInData := backend2.ConfirmSmsVerifyCodeReq{
 		Mobile: u.Data.Mobile,
 		Code:   getVerifyCode(u.Data.Mobile),
 	}
-	token, err := backend.New().MobileSignIn(signInData)
+	token, err := backend2.New().MobileSignIn(signInData)
 	if err != nil {
 		log.Error("fail to sign in: ", err.Error())
 		return err
@@ -33,7 +35,7 @@ func (u *User) SignIn() error {
 func (u *User) GetInfo() error {
 	log.Debug("get user info: ", u.Data.UserId)
 
-	data, err := backend.New().GetUserData(u.Data.UserId, u.Token.AccessToken)
+	data, err := backend2.New().GetUserData(u.Data.UserId, u.Token.AccessToken)
 	if err != nil {
 		log.Error("fail to get user data: ", u.Data.UserId, ". ", err.Error())
 		return err

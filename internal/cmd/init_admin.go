@@ -1,8 +1,8 @@
-package cli
+package cmd
 
 import (
-	"cli-tool/internal/pkg/db"
-	"cli-tool/internal/pkg/util"
+	"cli-tool/internal/db"
+	"cli-tool/internal/util"
 	"github.com/Template7/common/structs"
 	"github.com/urfave/cli/v2"
 )

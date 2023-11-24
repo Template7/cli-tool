@@ -1,7 +1,7 @@
 package user
 
 import (
-	fakeDataGenerator "cli-tool/internal/pkg/fakeData"
+	fakeDataGenerator "cli-tool/internal/fakeData"
 	"github.com/spf13/viper"
 	"testing"
 )

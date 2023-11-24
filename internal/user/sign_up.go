@@ -1,22 +1,22 @@
 package user
 
 import (
-	"cli-tool/internal/pkg/backend"
+	backend2 "cli-tool/internal/backend"
 )
 
 func (u *User) SignUp() error {
 	log.Debug("user sign up: ", u.Data.UserId)
 
-	if err := backend.New().SendSms(u.Data.Mobile); err != nil {
+	if err := backend2.New().SendSms(u.Data.Mobile); err != nil {
 		log.Error("fail to send sms: ", err.Error())
 		return err
 	}
 
-	signUpData := backend.ConfirmSmsVerifyCodeReq{
+	signUpData := backend2.ConfirmSmsVerifyCodeReq{
 		Mobile: u.Data.Mobile,
 		Code:   getVerifyCode(u.Data.Mobile),
 	}
-	token, err := backend.New().MobileSignUp(signUpData)
+	token, err := backend2.New().MobileSignUp(signUpData)
 	if err != nil {
 		log.Error("fail to sign up: ", err.Error())
 		return err
