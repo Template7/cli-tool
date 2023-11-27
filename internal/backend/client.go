@@ -17,6 +17,8 @@ const (
 	uriWalletDeposit  = "/api/v1/wallets/%s/deposit"
 	uriWalletWithdraw = "/api/v1/wallets/%s/withdraw"
 	uriWalletTransfer = "/api/v1/transfer"
+
+	uriCreateUser = "/admin/v1/user"
 	//uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
 	//uriMobileSignUp      = "/api/v1/sign-up/mobile"
 	//uriMobileSignIn      = "/api/v1/sign-in/mobile"

@@ -65,3 +65,38 @@ func (c *CliCent) GetUserInfo(ctx context.Context, userToken string) (types.Http
 	log.With("requestId", data.RequestId).Debug("get user info success")
 	return data.Data, nil
 }
+
+func (c *CliCent) CreateUser(ctx context.Context, username string, password string, role string, nickname string, email string, adminToken string) error {
+	log := c.log.WithContext(ctx).With("token", adminToken)
+	log.Debug("create user")
+
+	body := types.HttpCreateUserReq{
+		Username: username,
+		Password: password,
+		Role:     role,
+		Nickname: nickname,
+		Email:    email,
+	}
+	bodyBytes, _ := json.Marshal(body)
+
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s%s", c.endPoint, uriCreateUser), bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return err
+	}
+	req.Header.Set("Authorization", adminToken)
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return err
+	}
+
+	var data types.HttpRespBase
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).Error("fail to unmarshal data")
+		return err
+	}
+
+	log.With("requestId", data.RequestId).Debug("create user success")
+	return nil
+}
