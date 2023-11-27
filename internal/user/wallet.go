@@ -8,7 +8,7 @@ import (
 func (u *User) Transfer(req apiBody.TransactionReq) (err error) {
 	log.Debug("user make transfer: ", req.String())
 
-	_, err = backend.New().Transaction(req, u.Token.AccessToken)
+	_, err = backend.New().Transfer(req, u.Token.AccessToken)
 	return
 }
 
