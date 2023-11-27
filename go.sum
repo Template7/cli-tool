@@ -65,6 +65,8 @@ github.com/Template7/backend v1.2.2-0.20220126104422-13caa54e118b h1:aSRL+aOqElD
 github.com/Template7/backend v1.2.2-0.20220126104422-13caa54e118b/go.mod h1:SMfm62whnHPBMie6JKunGTI5omhRJNmG9J83PHXa++Q=
 github.com/Template7/backend v1.2.3 h1:LLkWk7tOq/RZRJDjtvIqghqgistOpivDdgODyrh1ekQ=
 github.com/Template7/backend v1.2.3/go.mod h1:rwObTudZFwxJXOJWPi6DXb2Y8dHYAGjgg3991XGuy7Q=
+github.com/Template7/backend v1.2.4 h1:iJmEfmvcECGksrM9jMncd+yjVMmEGa1+foMcOz6aEeY=
+github.com/Template7/backend v1.2.4/go.mod h1:rwObTudZFwxJXOJWPi6DXb2Y8dHYAGjgg3991XGuy7Q=
 github.com/Template7/common v0.0.0-20220117062309-aefc500e2dea/go.mod h1:gg47i7jS0AxXWcWxk+jypc86HwXCcAp0uYwOdMbUgNU=
 github.com/Template7/common v0.0.0-20220120032944-4b5be01936fc/go.mod h1:48wwHyKJEzIDpwDrNy4kXU3EZnYIeCoKoGtjK0t2Rd8=
 github.com/Template7/common v0.1.8 h1:7LM1aJswvcrMH8t6Tj0kNBV69h//DPGuJAiKzT0rsM4=

@@ -13,6 +13,10 @@ const (
 	uriUserLogin      = "/api/v1/login/native"
 	uriUpdateUserInfo = "/api/v1/user/info"
 	uriGetUserInfo    = "/api/v1/user/info"
+
+	uriWalletDeposit  = "/api/v1/wallets/%s/deposit"
+	uriWalletWithdraw = "/api/v1/wallets/%s/withdraw"
+	uriWalletTransfer = "/api/v1/transfer"
 	//uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
 	//uriMobileSignUp      = "/api/v1/sign-up/mobile"
 	//uriMobileSignIn      = "/api/v1/sign-in/mobile"
