@@ -79,7 +79,7 @@ func (c *CliCent) CreateUser(ctx context.Context, username string, password stri
 	}
 	bodyBytes, _ := json.Marshal(body)
 
-	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s%s", c.endPoint, uriCreateUser), bytes.NewBuffer(bodyBytes))
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s%s", c.endPoint, uriCreateUser), bytes.NewBuffer(bodyBytes))
 	if err != nil {
 		log.WithError(err).Error("fail to new http req")
 		return err
@@ -93,10 +93,50 @@ func (c *CliCent) CreateUser(ctx context.Context, username string, password stri
 
 	var data types.HttpRespBase
 	if err := json.Unmarshal(resp, &data); err != nil {
-		log.WithError(err).Error("fail to unmarshal data")
+		log.WithError(err).With("data", string(resp)).Error("fail to unmarshal data")
 		return err
 	}
 
-	log.With("requestId", data.RequestId).Debug("create user success")
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.Warn("create user failed")
+		return fmt.Errorf(data.Message)
+	}
+
+	log.Info("create user success")
+	return nil
+}
+
+func (c *CliCent) DeleteUser(ctx context.Context, userId string, adminToken string) error {
+	log := c.log.WithContext(ctx).With("token", adminToken)
+	log.Debug("delete user")
+
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s%s", c.endPoint, fmt.Sprintf(uriDeleteUser, userId)), nil)
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return err
+	}
+	req.Header.Set("Authorization", adminToken)
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return err
+	}
+
+	var data types.HttpRespBase
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).With("data", string(resp)).Error("fail to unmarshal data")
+		return err
+	}
+
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.Warn("create user failed")
+		return fmt.Errorf(data.Message)
+	}
+
+	log.Info("delete user success")
 	return nil
 }
