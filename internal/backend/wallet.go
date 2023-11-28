@@ -9,7 +9,33 @@ import (
 	"net/http"
 )
 
-func (c *CliCent) Deposit(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
+func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.HttpGetUserWalletsRespData {
+	log := c.log.WithContext(ctx).With("token", userToken)
+	log.Debug("get user wallet")
+
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", c.endPoint, uriGetUserWallets), nil)
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return nil
+	}
+	req.Header.Set("Authorization", userToken)
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return nil
+	}
+
+	var data types.HttpGetUserWalletsResp
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).Error("fail to unmarshal data")
+		return nil
+	}
+
+	log.With("requestId", data.RequestId).Debug("wallet deposit success")
+	return data.Data
+}
+
+func (c *Client) Deposit(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
 	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken)
 	log.Debug("wallet deposit")
 
@@ -40,7 +66,7 @@ func (c *CliCent) Deposit(ctx context.Context, walletId string, currency string,
 	return nil
 }
 
-func (c *CliCent) Withdraw(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
+func (c *Client) Withdraw(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
 	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken)
 	log.Debug("wallet withdraw")
 
@@ -71,7 +97,7 @@ func (c *CliCent) Withdraw(ctx context.Context, walletId string, currency string
 	return nil
 }
 
-func (c *CliCent) Transfer(ctx context.Context, fromWalletId string, toWalletId string, currency string, amount int, userToken string) error {
+func (c *Client) Transfer(ctx context.Context, fromWalletId string, toWalletId string, currency string, amount int, userToken string) error {
 	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken).With("from", fromWalletId).With("to", toWalletId)
 	log.Debug("wallet transfer")
 

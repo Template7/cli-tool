@@ -13,6 +13,7 @@ const (
 	uriUserLogin      = "/api/v1/login/native"
 	uriUpdateUserInfo = "/api/v1/user/info"
 	uriGetUserInfo    = "/api/v1/user/info"
+	uriGetUserWallets = "/api/v1/user/wallets"
 
 	uriWalletDeposit  = "/api/v1/wallets/%s/deposit"
 	uriWalletWithdraw = "/api/v1/wallets/%s/withdraw"
@@ -29,7 +30,7 @@ const (
 	//uriTransaction       = "/api/v1/transaction"
 )
 
-type CliCent struct {
+type Client struct {
 	endPoint string
 
 	log *logger.Logger
@@ -37,13 +38,13 @@ type CliCent struct {
 
 var (
 	once     sync.Once
-	instance *CliCent
+	instance *Client
 )
 
-func New() *CliCent {
+func New() *Client {
 	once.Do(func() {
 		log := logger.New().WithService("backend")
-		instance = &CliCent{
+		instance = &Client{
 			endPoint: config.New().Backend.Endpoint,
 			log:      log,
 		}
@@ -53,7 +54,7 @@ func New() *CliCent {
 	return instance
 }
 
-func (c *CliCent) SendReq(ctx context.Context, req *http.Request) (data []byte, err error) {
+func (c *Client) SendReq(ctx context.Context, req *http.Request) (data []byte, err error) {
 	log := c.log.WithContext(ctx)
 	log.Debug("send http req")
 

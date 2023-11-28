@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (c *CliCent) UpdateUserInfo(ctx context.Context, nickname string, userToken string) (err error) {
+func (c *Client) UpdateUserInfo(ctx context.Context, nickname string, userToken string) (err error) {
 	log := c.log.WithContext(ctx).With("token", userToken)
 	log.Debug("update user info")
 
@@ -40,7 +40,7 @@ func (c *CliCent) UpdateUserInfo(ctx context.Context, nickname string, userToken
 	return nil
 }
 
-func (c *CliCent) GetUserInfo(ctx context.Context, userToken string) (types.HttpUserInfoRespData, error) {
+func (c *Client) GetUserInfo(ctx context.Context, userToken string) (types.HttpUserInfoRespData, error) {
 	log := c.log.WithContext(ctx).With("token", userToken)
 	log.Debug("get user info")
 
@@ -66,7 +66,7 @@ func (c *CliCent) GetUserInfo(ctx context.Context, userToken string) (types.Http
 	return data.Data, nil
 }
 
-func (c *CliCent) CreateUser(ctx context.Context, username string, password string, role string, nickname string, email string, adminToken string) error {
+func (c *Client) CreateUser(ctx context.Context, username string, password string, role string, nickname string, email string, adminToken string) error {
 	log := c.log.WithContext(ctx).With("token", adminToken)
 	log.Debug("create user")
 
@@ -108,7 +108,7 @@ func (c *CliCent) CreateUser(ctx context.Context, username string, password stri
 	return nil
 }
 
-func (c *CliCent) DeleteUser(ctx context.Context, userId string, adminToken string) error {
+func (c *Client) DeleteUser(ctx context.Context, userId string, adminToken string) error {
 	log := c.log.WithContext(ctx).With("token", adminToken).With("userId", userId)
 	log.Debug("delete user")
 
