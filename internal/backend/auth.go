@@ -36,6 +36,13 @@ func (c *CliCent) NativeLogin(ctx context.Context, username string, password str
 		return ""
 	}
 
-	log.With("requestId", data.RequestId).Debug("user login success")
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.Warn("login fail")
+		return ""
+	}
+
+	log.Info("user login success")
 	return data.Data.Token
 }
