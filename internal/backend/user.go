@@ -109,7 +109,7 @@ func (c *CliCent) CreateUser(ctx context.Context, username string, password stri
 }
 
 func (c *CliCent) DeleteUser(ctx context.Context, userId string, adminToken string) error {
-	log := c.log.WithContext(ctx).With("token", adminToken)
+	log := c.log.WithContext(ctx).With("token", adminToken).With("userId", userId)
 	log.Debug("delete user")
 
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s%s", c.endPoint, fmt.Sprintf(uriDeleteUser, userId)), nil)

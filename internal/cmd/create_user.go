@@ -52,7 +52,7 @@ func runCreateUser(ctx context.Context, adminUsername string, adminPassword stri
 	}
 
 	for i := 0; i < amount; i++ {
-		username := fmt.Sprintf("fakeUser%06d", i+1)
+		username := fmt.Sprintf("fakeUser%03d", i+1)
 		if err := backend.New().CreateUser(ctx, username, username, "user", gofakeit.FirstName(), gofakeit.Email(), adminToken); err != nil {
 			log.WithError(err).Error("fail to create user")
 		}
