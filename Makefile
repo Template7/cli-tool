@@ -1,7 +1,7 @@
 .PHONY: build all
 
 build:
-	go build -o template7-cli
+	go build -o template7-cli ./cmd/main.go
 
 build-docker:
 	docker-compose -f build/docker-compose.yaml build

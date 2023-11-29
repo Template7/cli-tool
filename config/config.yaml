@@ -1,0 +1,22 @@
+log:
+  level: DEBUG
+  formatter: STRING
+
+db:
+  sql:
+    db: template7
+    host: 127.0.0.1
+    port: 3306
+    #    username: admin
+    username: root
+    password: password
+    connection:
+      min: 4
+      max: 8
+
+backend:
+  endpoint: "http://localhost:8080"
+
+redis:
+  host: "localhost:6379"
+  password:
