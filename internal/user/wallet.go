@@ -26,7 +26,7 @@ func (u *User) GetWallet(ctx context.Context) {
 }
 
 func (u *User) Deposit(ctx context.Context, currency string, amount int) error {
-	log := u.log.WithContext(ctx)
+	log := u.log.WithContext(ctx).With("currency", currency).With("amount", amount)
 	log.Debug("user deposit")
 
 	if len(u.wallets) == 0 {
@@ -49,7 +49,7 @@ func (u *User) Deposit(ctx context.Context, currency string, amount int) error {
 }
 
 func (u *User) Withdraw(ctx context.Context, currency string, amount int) error {
-	log := u.log.WithContext(ctx)
+	log := u.log.WithContext(ctx).With("currency", currency).With("amount", amount)
 	log.Debug("user withdraw")
 
 	if len(u.wallets) == 0 {
@@ -64,6 +64,29 @@ func (u *User) Withdraw(ctx context.Context, currency string, amount int) error 
 	for wId, _ := range u.wallets {
 		if err := u.be.Withdraw(ctx, wId, currency, amount, u.token); err != nil {
 			log.WithError(err).Error("fail to withdraw")
+			return err
+		}
+		return nil
+	}
+	return nil
+}
+
+func (u *User) Transfer(ctx context.Context, toWalletId string, currency string, amount int) error {
+	log := u.log.WithContext(ctx).With("currency", currency).With("amount", amount)
+	log.Debug("user transfer money")
+
+	if len(u.wallets) == 0 {
+		log.Warn("user has no wallet")
+		return fmt.Errorf("user has no wallet")
+	}
+
+	if len(u.wallets) > 1 {
+		log.Warn("user has multiple wallets, deposit the 1st as default")
+	}
+
+	for wId, _ := range u.wallets {
+		if err := u.be.Transfer(ctx, wId, toWalletId, currency, amount, u.token); err != nil {
+			log.WithError(err).Error("fail to transfer")
 			return err
 		}
 		return nil
