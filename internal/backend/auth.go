@@ -39,7 +39,7 @@ func (c *Client) NativeLogin(ctx context.Context, username string, password stri
 	log = log.With("requestId", data.RequestId)
 
 	if data.Code != types.HttpRespCodeOk {
-		log.Warn("login fail")
+		log.With("resp", resp).Warn("something went wrong")
 		return ""
 	}
 
