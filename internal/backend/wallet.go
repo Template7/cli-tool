@@ -31,7 +31,7 @@ func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.H
 		return nil
 	}
 
-	log.With("requestId", data.RequestId).Debug("wallet deposit success")
+	log.With("requestId", data.RequestId).Debug("get user wallet success")
 	return data.Data
 }
 
