@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (c *CliCent) NativeLogin(ctx context.Context, username string, password string) string {
+func (c *Client) NativeLogin(ctx context.Context, username string, password string) string {
 	log := c.log.WithContext(ctx).With("username", username)
 	log.Debug("user login")
 
