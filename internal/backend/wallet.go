@@ -31,6 +31,13 @@ func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.H
 		return nil
 	}
 
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
+	}
+
 	log.With("requestId", data.RequestId).Debug("get user wallet success")
 	return data.Data
 }
@@ -62,6 +69,13 @@ func (c *Client) Deposit(ctx context.Context, walletId string, currency string, 
 		return err
 	}
 
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
+	}
+
 	log.With("requestId", data.RequestId).Debug("wallet deposit success")
 	return nil
 }
@@ -91,6 +105,13 @@ func (c *Client) Withdraw(ctx context.Context, walletId string, currency string,
 	if err := json.Unmarshal(resp, &data); err != nil {
 		log.WithError(err).Error("fail to unmarshal data")
 		return err
+	}
+
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
 	}
 
 	log.With("requestId", data.RequestId).Debug("wallet withdraw success")
@@ -126,6 +147,13 @@ func (c *Client) Transfer(ctx context.Context, fromWalletId string, toWalletId s
 		return err
 	}
 
-	log.With("requestId", data.RequestId).Debug("wallet transfer success")
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
+	}
+
+	log.Debug("wallet transfer success")
 	return nil
 }

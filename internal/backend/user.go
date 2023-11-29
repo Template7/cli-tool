@@ -36,6 +36,13 @@ func (c *Client) UpdateUserInfo(ctx context.Context, nickname string, userToken 
 		return err
 	}
 
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
+	}
+
 	log.With("requestId", data.RequestId).Debug("update user info success")
 	return nil
 }
@@ -60,6 +67,13 @@ func (c *Client) GetUserInfo(ctx context.Context, userToken string) (types.HttpU
 	if err := json.Unmarshal(resp, &data); err != nil {
 		log.WithError(err).Error("fail to unmarshal data")
 		return types.HttpUserInfoRespData{}, err
+	}
+
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return data.Data, nil
 	}
 
 	log.With("requestId", data.RequestId).Debug("get user info success")
@@ -100,8 +114,8 @@ func (c *Client) CreateUser(ctx context.Context, username string, password strin
 	log = log.With("requestId", data.RequestId)
 
 	if data.Code != types.HttpRespCodeOk {
-		log.Warn("create user failed")
-		return fmt.Errorf(data.Message)
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
 	}
 
 	log.Info("create user success")
@@ -133,8 +147,8 @@ func (c *Client) DeleteUser(ctx context.Context, userId string, adminToken strin
 	log = log.With("requestId", data.RequestId)
 
 	if data.Code != types.HttpRespCodeOk {
-		log.Warn("create user failed")
-		return fmt.Errorf(data.Message)
+		log.With("resp", resp).Warn("something went wrong")
+		return nil
 	}
 
 	log.Info("delete user success")

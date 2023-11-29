@@ -5,19 +5,17 @@ go 1.21.1
 require (
 	github.com/Template7/backend v1.2.4
 	github.com/Template7/common v0.1.8
+	github.com/Template7/protobuf v0.1.13
 	github.com/brianvoe/gofakeit/v6 v6.25.0
 	github.com/google/uuid v1.3.1
 	github.com/spf13/viper v1.16.0
 	github.com/urfave/cli/v2 v2.3.0
-	golang.org/x/crypto v0.14.0
 	golang.org/x/net v0.17.0
 	gorm.io/gorm v1.25.4
 )
 
 require (
-	github.com/Template7/protobuf v0.1.13 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
@@ -46,6 +44,7 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
