@@ -84,10 +84,10 @@ func runSimulation(ctx context.Context, amount int, rest int, threshold int, dur
 	var wg sync.WaitGroup
 	for i, u := range users {
 		wg.Add(1)
-		go func(u *user.User) {
+		go func(u *user.User, i int) {
 			defer wg.Done()
 			u.Do(ctx, threshold, append(wallets[:i], wallets[i+1:]...), rest)
-		}(u)
+		}(u, i)
 	}
 
 	wg.Wait()
