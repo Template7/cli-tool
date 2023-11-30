@@ -26,7 +26,7 @@ var Simulation = cli.Command{
 			Name:    "amount",
 			Aliases: []string{"a"},
 			Usage:   "Amount of users",
-			Value:   1,
+			Value:   2,
 		},
 		&cli.IntFlag{
 			Name:    "rest",
