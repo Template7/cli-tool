@@ -17,6 +17,7 @@ func main() {
 		Commands: []*cli.Command{
 			&cmd.CreateUser,
 			&cmd.DeleteUser,
+			&cmd.Simulation,
 		},
 	}
 

@@ -10,7 +10,7 @@ import (
 )
 
 func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.HttpGetUserWalletsRespData {
-	log := c.log.WithContext(ctx).With("token", userToken)
+	log := c.log.WithContext(ctx)
 	log.Debug("get user wallet")
 
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", c.endPoint, uriGetUserWallets), nil)
@@ -43,7 +43,7 @@ func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.H
 }
 
 func (c *Client) Deposit(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
-	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken)
+	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount)
 	log.Debug("wallet deposit")
 
 	body := types.HttpWalletDepositReq{
@@ -81,7 +81,7 @@ func (c *Client) Deposit(ctx context.Context, walletId string, currency string, 
 }
 
 func (c *Client) Withdraw(ctx context.Context, walletId string, currency string, amount int, userToken string) error {
-	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken)
+	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount)
 	log.Debug("wallet withdraw")
 
 	body := types.HttpWalletWithdrawReq{
@@ -119,7 +119,7 @@ func (c *Client) Withdraw(ctx context.Context, walletId string, currency string,
 }
 
 func (c *Client) Transfer(ctx context.Context, fromWalletId string, toWalletId string, currency string, amount int, userToken string) error {
-	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("token", userToken).With("from", fromWalletId).With("to", toWalletId)
+	log := c.log.WithContext(ctx).With("currency", currency).With("amount", amount).With("from", fromWalletId).With("to", toWalletId)
 	log.Debug("wallet transfer")
 
 	body := types.HttpTransferMoneyReq{
