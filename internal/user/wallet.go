@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func (u *User) GetWallet(ctx context.Context) {
+func (u *User) GetWallet(ctx context.Context) map[string]map[string]int {
 	log := u.log.WithContext(ctx)
 	log.Debug("get wallet")
 
@@ -23,6 +23,7 @@ func (u *User) GetWallet(ctx context.Context) {
 			u.wallets[uw.Id][blc.Currency] = am
 		}
 	}
+	return u.wallets
 }
 
 func (u *User) Deposit(ctx context.Context, currency string, amount int) error {
