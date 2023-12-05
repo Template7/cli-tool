@@ -21,6 +21,8 @@ func (u *User) Do(ctx context.Context, threshold int, toWallets []string, rest i
 	log := u.log.WithContext(ctx).With("threshold", threshold)
 	log.Debug("user do")
 
+	rdm := rand.New(rand.NewSource(time.Now().UnixNano()))
+
 	for {
 		select {
 		case <-ctx.Done():
@@ -32,15 +34,15 @@ func (u *User) Do(ctx context.Context, threshold int, toWallets []string, rest i
 			act, cur, blc := u.checkAction(ctx, threshold)
 			switch act {
 			case doDeposit:
-				if err := u.Deposit(ctx, cur, 1+rand.Intn(1000)); err != nil {
+				if err := u.Deposit(ctx, cur, 1+rdm.Intn(1000)); err != nil {
 					log.WithError(err).Error("fail to deposit")
 				}
 			case doWithdraw:
-				if err := u.Withdraw(ctx, cur, 1+rand.Intn(threshold)); err != nil {
+				if err := u.Withdraw(ctx, cur, 1+rdm.Intn(threshold)); err != nil {
 					log.WithError(err).Error("fail to deposit")
 				}
 			case doTransfer:
-				if err := u.Transfer(ctx, toWallets[rand.Intn(len(toWallets))], cur, 1+rand.Intn(blc)); err != nil {
+				if err := u.Transfer(ctx, toWallets[rdm.Intn(len(toWallets))], cur, 1+rdm.Intn(blc)); err != nil {
 					log.WithError(err).Error("fail to deposit")
 				}
 			}
