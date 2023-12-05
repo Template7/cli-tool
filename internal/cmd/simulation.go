@@ -16,10 +16,10 @@ import (
 var Simulation = cli.Command{
 	Name:  "Simulation",
 	Usage: "Simulate random user transaction process",
-	Description: "For each user behavior: \n\t - If a user have no money in his wallet, " +
-		"he will deposit random [1, 1000) with random currency(one of usd, ntd, jpy, cny). \n\t" +
-		" - Once a user have more than 700 of any currency in his wallet, he will withdraw random [1, 700] from the wallet of the currency. \n\t" +
-		" - If a user have less or equal than 700 of any currency, he will transfer random [1, 700] to any one of other user of the currency.",
+	Description: "For each user behavior: \n\t - If the user have no money in his wallet, " +
+		"it will deposit random [1, 1000) with random currency(one of usd, ntd, jpy, cny). \n\t" +
+		" - Once the user have more than 700 of any currency in its wallet, it will withdraw random [1, 700] from the wallet of the currency. \n\t" +
+		" - If the user have less or equal than 700 of any currency, it will transfer random [1, 700] to any one of other user of the currency.",
 	Aliases: []string{"sm"},
 	Flags: []cli.Flag{
 		&cli.IntFlag{
@@ -73,6 +73,10 @@ func runSimulation(ctx context.Context, amount int, rest int, threshold int, dur
 	for i := 0; i < amount; i++ {
 		username := fmt.Sprintf("fakeUser%03d", i+1)
 		u := user.New(ctx, username, username)
+		if u == nil {
+			log.With("username", username).Error("fail to new user")
+			return
+		}
 		wl := u.GetWallet(ctx)
 		for wId, _ := range wl {
 			wallets[i] = wId

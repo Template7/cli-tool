@@ -14,10 +14,11 @@ func main() {
 	app := &cli.App{
 		Name:    "Template7 Internal CLI Tool",
 		Version: version,
-		Commands: []*cli.Command{
+		Commands: cli.Commands{
 			&cmd.CreateUser,
 			&cmd.DeleteUser,
 			&cmd.Simulation,
+			&cmd.Demo,
 		},
 	}
 

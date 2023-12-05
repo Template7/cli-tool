@@ -38,7 +38,7 @@ func (c *Client) GetUserWallets(ctx context.Context, userToken string) []types.H
 		return nil
 	}
 
-	log.With("requestId", data.RequestId).Debug("get user wallet success")
+	log.Debug("get user wallet success")
 	return data.Data
 }
 
@@ -76,7 +76,7 @@ func (c *Client) Deposit(ctx context.Context, walletId string, currency string, 
 		return nil
 	}
 
-	log.With("requestId", data.RequestId).Debug("wallet deposit success")
+	log.Debug("wallet deposit success")
 	return nil
 }
 
@@ -114,7 +114,7 @@ func (c *Client) Withdraw(ctx context.Context, walletId string, currency string,
 		return nil
 	}
 
-	log.With("requestId", data.RequestId).Debug("wallet withdraw success")
+	log.Debug("wallet withdraw success")
 	return nil
 }
 
