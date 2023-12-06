@@ -196,4 +196,18 @@ func runDemo(ctx context.Context, username string, password string) {
 			fmt.Println("receiver info after withdraw: ", u2.String())
 		}
 	}
+
+	// show record history
+	for wId, bls := range u1w {
+		for cur, _ := range bls {
+			u1.GetBalanceRecord(ctx, wId, cur)
+		}
+	}
+	for wId, bls := range u2w {
+		for cur, _ := range bls {
+			u2.GetBalanceRecord(ctx, wId, cur)
+		}
+	}
+	fmt.Println("show user info: ", u1.String())
+	fmt.Println("show user info: ", u2.String())
 }
