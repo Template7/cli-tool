@@ -15,9 +15,10 @@ const (
 	uriGetUserInfo    = "/api/v1/user/info"
 	uriGetUserWallets = "/api/v1/user/wallets"
 
-	uriWalletDeposit  = "/api/v1/wallets/%s/deposit"
-	uriWalletWithdraw = "/api/v1/wallets/%s/withdraw"
-	uriWalletTransfer = "/api/v1/transfer"
+	uriWalletDeposit          = "/api/v1/wallets/%s/deposit"
+	uriWalletWithdraw         = "/api/v1/wallets/%s/withdraw"
+	uriWalletTransfer         = "/api/v1/transfer"
+	uriGetWalletBalanceRecord = "/api/v1/wallets/%s/currencies/%s/record"
 
 	uriCreateUser = "/admin/v1/user"
 	uriDeleteUser = "/admin/v1/users/%s"
