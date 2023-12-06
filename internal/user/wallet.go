@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"fmt"
+	"github.com/Template7/backend/api/types"
 	"strconv"
 )
 
@@ -93,4 +94,20 @@ func (u *User) Transfer(ctx context.Context, toWalletId string, currency string,
 		return nil
 	}
 	return nil
+}
+
+func (u *User) GetBalanceRecord(ctx context.Context, walletId string, currency string) []types.HttpGetWalletBalanceRecordRespData {
+	log := u.log.WithContext(ctx).With("walletId", walletId).With("currency", currency)
+	log.Debug("user get wallet balance record")
+
+	records := u.be.GetWalletBalanceRecord(ctx, walletId, currency, u.token)
+	if _, ok := u.records[walletId]; !ok {
+		u.records[walletId] = map[string][]types.HttpGetWalletBalanceRecordRespData{
+			currency: records,
+		}
+		return records
+	}
+
+	u.records[walletId][currency] = records
+	return records
 }

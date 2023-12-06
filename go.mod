@@ -3,11 +3,11 @@ module cli-tool
 go 1.21.1
 
 require (
-	github.com/Template7/backend v1.2.4
-	github.com/Template7/common v0.1.8
+	github.com/Template7/backend v1.3.3
+	github.com/Template7/common v1.0.0
 	github.com/Template7/protobuf v0.1.13
 	github.com/brianvoe/gofakeit/v6 v6.25.0
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.4.0
 	github.com/spf13/viper v1.16.0
 	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/net v0.17.0
@@ -30,6 +30,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.9 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.0.1 // indirect
+	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
