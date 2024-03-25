@@ -3,6 +3,7 @@ package backend
 import (
 	"cli-tool/internal/config"
 	"context"
+	"fmt"
 	"github.com/Template7/common/logger"
 	"io"
 	"net/http"
@@ -46,7 +47,7 @@ func New() *Client {
 	once.Do(func() {
 		log := logger.New().WithService("backend")
 		instance = &Client{
-			endPoint: config.New().Backend.Endpoint,
+			endPoint: fmt.Sprintf("http://%s", config.New().Backend.Endpoint),
 			log:      log,
 		}
 
