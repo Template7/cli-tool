@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"cli-tool/internal/backend"
 	"cli-tool/internal/user"
 	"context"
 	"fmt"
@@ -16,30 +17,32 @@ var Demo = cli.Command{
 	Aliases: []string{"dm"},
 	Flags: []cli.Flag{
 		&cli.StringFlag{
-			Name:     "username",
-			Aliases:  []string{"u"},
-			Usage:    "Username",
+			Name:     "adminUsername",
+			Aliases:  []string{"au"},
+			Usage:    "Admin username",
 			Required: true,
 		},
 		&cli.StringFlag{
-			Name:     "password",
-			Aliases:  []string{"p"},
-			Usage:    "Password",
+			Name:     "adminPassword",
+			Aliases:  []string{"ap"},
+			Usage:    "Admin password",
 			Required: true,
 		},
 	},
 	Action: func(c *cli.Context) error {
 		ctx := context.WithValue(c.Context, "traceId", uuid.NewString())
-		runDemo(ctx, c.String("username"), c.String("password"))
+		runDemo(ctx, c.String("adminUsername"), c.String("adminPassword"))
 		return nil
 	},
 }
 
-func runDemo(ctx context.Context, username string, password string) {
+func runDemo(ctx context.Context, adminUsername string, adminPassword string) {
 	log := logger.New().WithContext(ctx)
 	log.Info("run demo")
 
-	u1 := user.New(ctx, username, password)
+	setupDemo(ctx, adminUsername, adminPassword)
+
+	u1 := user.New(ctx, "demoSender", "demoSender")
 	if u1 == nil {
 		log.Error("fail to new user")
 		return
@@ -54,117 +57,91 @@ func runDemo(ctx context.Context, username string, password string) {
 	fmt.Println("sender info: ", u1.String())
 	fmt.Println("receiver info: ", u2.String())
 
+	show := func() {
+		u1.GetWallet(ctx)
+		u2.GetWallet(ctx)
+		fmt.Println("sender info: ", u1.String())
+		fmt.Println("receiver info: ", u2.String())
+	}
+
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_usd)], 1); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_usd)], 23); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_usd)], 456); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_ntd)], 6); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_ntd)], 54); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
 	if err := u1.Deposit(ctx, v1.Currency_name[int32(v1.Currency_ntd)], 321); err != nil {
 		log.WithError(err).Error("fail to deposit")
 		return
 	}
-	u1.GetWallet(ctx)
-	u2w := u2.GetWallet(ctx)
-	fmt.Println("sender info after deposit: ", u1.String())
-	fmt.Println("receiver info after deposit: ", u2.String())
+	show()
 
-	for wId, _ := range u2w {
+	for wId, _ := range u2.GetWallet(ctx) {
 		if err := u1.Transfer(ctx, wId, v1.Currency_name[int32(v1.Currency_usd)], 6); err != nil {
 			log.WithError(err).Error("fail to deposit")
 		}
 		break
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after transfer: ", u1.String())
-	fmt.Println("receiver info after transfer: ", u2.String())
+	show()
 
-	for wId, _ := range u2w {
+	for wId, _ := range u2.GetWallet(ctx) {
 		if err := u1.Transfer(ctx, wId, v1.Currency_name[int32(v1.Currency_usd)], 78); err != nil {
 			log.WithError(err).Error("fail to deposit")
 		}
 		break
 	}
-	u1w := u1.GetWallet(ctx)
-	u2w = u2.GetWallet(ctx)
-	fmt.Println("sender info after transfer: ", u1.String())
-	fmt.Println("receiver info after transfer: ", u2.String())
+	show()
 
-	for wId, _ := range u2w {
+	for wId, _ := range u2.GetWallet(ctx) {
 		if err := u1.Transfer(ctx, wId, v1.Currency_name[int32(v1.Currency_ntd)], 91); err != nil {
 			log.WithError(err).Error("fail to deposit")
 		}
 		break
 	}
-	u1.GetWallet(ctx)
-	u2.GetWallet(ctx)
-	fmt.Println("sender info after transfer: ", u1.String())
-	fmt.Println("receiver info after transfer: ", u2.String())
+	show()
 
-	for wId, _ := range u2w {
+	for wId, _ := range u2.GetWallet(ctx) {
 		if err := u1.Transfer(ctx, wId, v1.Currency_name[int32(v1.Currency_ntd)], 234); err != nil {
 			log.WithError(err).Error("fail to deposit")
 		}
 		break
 	}
-	u1w = u1.GetWallet(ctx)
-	u2w = u2.GetWallet(ctx)
-	fmt.Println("sender info after transfer: ", u1.String())
-	fmt.Println("receiver info after transfer: ", u2.String())
+	show()
 
-	for wId, _ := range u2w {
+	for wId, _ := range u2.GetWallet(ctx) {
 		if err := u1.Transfer(ctx, wId, v1.Currency_name[int32(v1.Currency_ntd)], 5); err != nil {
 			log.WithError(err).Error("fail to deposit")
 		}
 		break
 	}
-	u1w = u1.GetWallet(ctx)
-	u2w = u2.GetWallet(ctx)
-	fmt.Println("sender info after transfer: ", u1.String())
-	fmt.Println("receiver info after transfer: ", u2.String())
+	show()
 
 	// withdraw all the currencies
-	for wId, bls := range u1w {
+	for wId, bls := range u1.GetWallet(ctx) {
 		for cur, am := range bls {
 			if am == 0 {
 				continue
@@ -180,7 +157,7 @@ func runDemo(ctx context.Context, username string, password string) {
 			fmt.Println("receiver info after withdraw: ", u2.String())
 		}
 	}
-	for wId, bls := range u2w {
+	for wId, bls := range u2.GetWallet(ctx) {
 		for cur, am := range bls {
 			if am == 0 {
 				continue
@@ -198,16 +175,36 @@ func runDemo(ctx context.Context, username string, password string) {
 	}
 
 	// show record history
-	for wId, bls := range u1w {
+	for wId, bls := range u1.GetWallet(ctx) {
 		for cur, _ := range bls {
 			u1.GetBalanceRecord(ctx, wId, cur)
 		}
 	}
-	for wId, bls := range u2w {
-		for cur, _ := range bls {
+	for wId, bls := range u2.GetWallet(ctx) {
+		for cur := range bls {
 			u2.GetBalanceRecord(ctx, wId, cur)
 		}
 	}
 	fmt.Println("show user info: ", u1.String())
 	fmt.Println("show user info: ", u2.String())
+}
+
+func setupDemo(ctx context.Context, adminUsername string, adminPassword string) {
+	log := logger.New().WithContext(ctx)
+	log.Info("setup demo")
+
+	adminToken := backend.New().NativeLogin(ctx, adminUsername, adminPassword)
+	if adminToken == "" {
+		log.Error("admin login fail")
+		return
+	}
+
+	if err := backend.New().CreateUser(ctx, "demoSender", "demoSender", "user", "demoSenderFirstName", "demoSender@email.com", adminToken); err != nil {
+		log.WithError(err).Panic("fail to create user")
+	}
+	if err := backend.New().CreateUser(ctx, "demoReceiver", "demoReceiver", "user", "demoReceiverFirstName", "demoReceiver@email.com", adminToken); err != nil {
+		log.WithError(err).Panic("fail to create user")
+	}
+
+	log.Info("setup demo done")
 }
