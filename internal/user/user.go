@@ -44,7 +44,7 @@ func New(ctx context.Context, username string, password string) *User {
 	}
 
 	if !u.login(ctx, username, password) {
-		log.Error("fail to login")
+		log.Panic("fail to login")
 		return nil
 	}
 	u.GetWallet(ctx)
