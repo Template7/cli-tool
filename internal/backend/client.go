@@ -21,8 +21,9 @@ const (
 	uriWalletTransfer         = "/api/v1/transfer"
 	uriGetWalletBalanceRecord = "/api/v1/wallets/%s/currencies/%s/record"
 
-	uriCreateUser = "/admin/v1/user"
-	uriDeleteUser = "/admin/v1/users/%s"
+	uriCreateUser   = "/admin/v1/user"
+	uriDeleteUser   = "/admin/v1/users/%s"
+	uriActivateUser = "/admin/v1/users/%s/activate"
 	//uriSendSmsVerifyCode = "/api/v1/verify-code/sms"
 	//uriMobileSignUp      = "/api/v1/sign-up/mobile"
 	//uriMobileSignIn      = "/api/v1/sign-in/mobile"
