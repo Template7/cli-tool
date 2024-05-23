@@ -105,7 +105,7 @@ func (c *Client) CreateUser(ctx context.Context, username string, password strin
 		return err
 	}
 
-	var data types.HttpRespBase
+	var data types.HttpCreateUserResp
 	if err := json.Unmarshal(resp, &data); err != nil {
 		log.WithError(err).With("data", string(resp)).Error("fail to unmarshal data")
 		return err
@@ -118,8 +118,51 @@ func (c *Client) CreateUser(ctx context.Context, username string, password strin
 		return nil
 	}
 
-	log.Info("create user success")
+	if !c.activateUser(ctx, data.Data.UserId, data.Data.ActivationCode, adminToken) {
+		log.Warn("user activation fail")
+		return fmt.Errorf("user activation fail")
+	}
+
+	log.Info("create user success and activated")
 	return nil
+}
+
+func (c *Client) activateUser(ctx context.Context, userId string, actCode string, adminToken string) bool {
+	log := c.log.WithContext(ctx).With("userId", userId)
+	log.Debug("activate user")
+
+	body := types.HttpActivateUserReq{
+		ActivationCode: actCode,
+	}
+	bodyBytes, _ := json.Marshal(body)
+
+	uri := fmt.Sprintf(uriActivateUser, userId)
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("%s%s", c.endPoint, uri), bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		log.WithError(err).Error("fail to new http req")
+		return false
+	}
+	req.Header.Set("Authorization", adminToken)
+	resp, err := c.SendReq(ctx, req)
+	if err != nil {
+		log.WithError(err).Error("fail to send req")
+		return false
+	}
+
+	var data types.HttpActivateUserResp
+	if err := json.Unmarshal(resp, &data); err != nil {
+		log.WithError(err).With("data", string(resp)).Error("fail to unmarshal data")
+		return false
+	}
+
+	log = log.With("requestId", data.RequestId)
+
+	if data.Code != types.HttpRespCodeOk {
+		log.With("resp", resp).Warn("something went wrong")
+		return false
+	}
+
+	return data.Data.Success
 }
 
 func (c *Client) DeleteUser(ctx context.Context, userId string, adminToken string) error {
