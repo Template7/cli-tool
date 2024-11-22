@@ -19,6 +19,7 @@ func main() {
 			&cmd.DeleteUser,
 			&cmd.Simulation,
 			&cmd.Demo,
+			&cmd.MigrateDb,
 		},
 	}
 
