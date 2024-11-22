@@ -6,9 +6,9 @@ db:
   sql:
     db: template7
     host: 127.0.0.1
-    port: 3306
+    port: 33306
     #    username: admin
-    username: root
+    username: admin
     password: password
     connection:
       min: 4
