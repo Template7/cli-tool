@@ -15,7 +15,7 @@ db:
       max: 8
 
 backend:
-  endpoint: "localhost:31080"
+  endpoint: "localhost:8080"
 #  endpoint: "localhost:8080"
 
 redis:

@@ -114,7 +114,7 @@ func (c *Client) CreateUser(ctx context.Context, username string, password strin
 	log = log.With("requestId", data.RequestId)
 
 	if data.Code != types.HttpRespCodeOk {
-		log.With("resp", resp).Warn("something went wrong")
+		log.With("data", data).Warn("something went wrong")
 		return nil
 	}
 
